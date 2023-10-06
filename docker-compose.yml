@@ -1,0 +1,25 @@
+version: '3'
+services:
+  db:
+     image: mysql
+     container_name: mysql_db
+     restart: always
+     environment:
+        - MYSQL_ROOT_PASSWORD="test@123"
+  web:
+    image: apache-web
+    build: .
+    depends_on:
+       - db
+    container_name: apache_web
+    restart: always
+    deploy:
+      replicas: 2
+    ports:
+      - "8001-8005:8001"
+    volumes:
+      - my_django_volume:/app
+
+volumes:
+  my_django_volume:
+    external: true
